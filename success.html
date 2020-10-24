@@ -1,0 +1,73 @@
+
+<style>
+
+  :host {
+    display:          flex;
+    background-color: transparent;
+    min-height:       100vh;
+    position:         fixed;
+    top:              0;
+    left:             0;
+    right:            0;
+  }
+
+  #exit-icon {
+    position: absolute;
+    top:      16px;
+    right:    16px;
+  }
+
+  #content {
+    display:          flex;
+    height:           100vh;
+    align-items:      center;
+    justify-content:  center;
+  }
+
+  #container {
+    padding:    16px;
+    text-align: center;
+  }
+
+  #thank-you {
+    font-size:     24px;
+    font-weight:   normal;
+    margin-bottom: 32px;
+    color:         var(--app-primary-color);
+  }
+
+  responsive-image {
+    width:            128px;
+    height:           128px;
+    margin-top:       32px;
+    background-color: var(--app-background-color);
+  }
+
+</style>
+
+
+<app-overlay id="overlay" 
+             prebuilt-animation="scale" 
+             on-click="__overlayClicked">
+  <div id="content" slot="content-slot">
+    <div id="container">
+      <iron-icon id="exit-icon" 
+                 icon="app-icons:check">
+      </iron-icon>
+      <h1 id="thank-you">Thank You!</h1>
+      <p id="pay">
+        [[_message]]
+      </p>
+      <p>
+        Your receipt has been emailed to <strong>[[_email]]</strong>.
+      </p>
+      <p>
+        If you don't see it in the next few minutes, please check your <strong>junk folder</strong>.
+      </p>
+      <responsive-image responsive="[[_logo]]" 
+                        alt="business logo" 
+                        sizing="contain">
+      </responsive-image>
+    </div>
+  </div>
+</app-overlay>
