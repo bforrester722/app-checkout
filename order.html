@@ -1,0 +1,187 @@
+
+<style>
+
+  #overlay {
+    --overlay-toolbar-background-color: var(--app-primary-color);
+  }
+  
+  #content {
+    max-width: 500px;
+    margin:    0px auto;
+  }
+
+  .padding-16 {
+    padding: 16px;
+  }
+
+  .divider {
+    @apply --bottom-divider-mixin;
+  }
+ 
+  h1 {
+    font-size:     24px;
+    font-weight:   normal;
+    margin-bottom: 32px;
+    color:         var(--dark-text-color);
+  }
+
+  strong {
+    color: var(--app-accent-color);
+  }
+
+  .items-section {
+    padding: 16px;
+  }
+
+  #items-heading {
+    padding: 0px 16px;
+  }
+
+  #slot::slotted(*) {
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-weight: normal;
+    color:       var(--dark-text-color);
+  }
+
+  #pricing-grid {
+    display:               grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .prices {
+    text-align: end;
+  }
+
+  #total {
+    display:         flex;
+    flex-direction:  column;
+    justify-content: center;
+    align-items:     center;
+  }
+
+  #total h1 {
+    margin: 0px;
+  }
+
+  .secondary-text {
+    margin-bottom: 24px;
+    color:         var(--secondary-text-color);
+  }
+
+  paper-checkbox {
+    font-size: 14px;
+    margin:    16px 0px;
+    --paper-checkbox-unchecked-color:     var(--dark-text-color);
+    --paper-checkbox-label-color:         var(--dark-text-color);
+    --paper-checkbox-unchecked-ink-color: var(--dark-text-color);
+    --paper-checkbox-checked-color:       var(--app-accent-color);
+    --paper-checkbox-checked-ink-color:   var(--app-accent-color);
+  }
+
+  .button-wrapper {
+    display:         flex;
+    justify-content: center;
+    margin:          32px 0px;
+  }
+
+  #order-btn {
+    width:            100%;
+    margin:           0px;
+    background-color: var(--app-accent-color);
+    color:            var(--constant-light-color, white);
+  }
+
+  #order-btn[disabled] {    
+    background-color: var(--app-disabled-color);
+    color:            var(--disabled-text-color);
+  }
+
+</style>
+
+
+<app-header-overlay id="overlay"
+                    reveal-header
+                    reset-scroll
+                    header-size="1"
+                    prebuilt-animation="from-right"
+                    title="My Order">
+
+  <div id="content" slot="content">
+
+    <div class="padding-16 divider">
+      <h1>Please confirm your order.</h1>
+      <p>You're almost done!</p>
+      <p>Here's what we have so far...</p>      
+    </div>
+
+    <div class="items-section divider">
+      <h3 id="items-heading">Items</h3>
+      <!-- items repeater -->
+      <slot id="slot"></slot>
+    </div>
+
+    <div class="padding-16 divider" hidden="[[_hideShipping]]">
+      <h3>Shipping to</h3>
+      <div>[[order.address.name]]</div>
+      <div>[[order.address.email]]</div>
+      <div>[[order.address.street1]] [[order.address.street2]]</div>
+      <div>[[order.address.city]], [[order.address.state]] [[order.address.zip]]</div>
+      <div>[[order.address.country]]</div>
+    </div>
+
+    <div id="pricing-grid" class="padding-16">
+      <div>Subtotal</div><div class="prices">$[[order.subtotal]]</div>
+      <div hidden="[[_hideShipping]]">Shipping</div>
+      <div class="prices" 
+           hidden="[[_hideShipping]]">
+        [[__computeFormattedShippingCost(order.shippingCost)]]
+      </div>
+      <div>Tax</div><div class="prices">$[[order.tax]]</div>
+      <div hidden="[[_hideCredit]]">
+        Store Credit</div>
+      <div class="prices"
+           hidden="[[_hideCredit]]">
+        - $[[order.credit]]
+      </div>
+    </div>
+
+    <div id="total" class="padding-16 divider">
+      <h1>$[[order.total]]</h1>
+      <div class="secondary-text">Total</div>
+    </div>
+
+    <div class="padding-16">
+      <p>
+        We will ask for your <strong>payment information</strong> in the next step.
+      </p>
+      <paper-checkbox on-checked-changed="__privacyTermsCheckedChanged">
+        I have read, and agree to, the 
+        <a href="[[_privacyUrl]]" 
+           target="_blank" 
+           rel="noreferrer">
+          Privacy Policy
+        </a>
+        and
+        <a href="[[_termsUrl]]" 
+           target="_blank" 
+           rel="noreferrer">
+          Terms of Service
+        </a>
+        .
+      </paper-checkbox>
+      <div class="button-wrapper">
+        <paper-button id="order-btn" 
+                      disabled="[[_orderBtnDisabled]]"
+                      on-click="__placeOrderButtonClicked"
+                      raised>
+          place order
+        </paper-button>
+      </div>
+    </div>
+
+  </div>
+
+</app-header-overlay>

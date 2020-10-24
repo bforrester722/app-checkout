@@ -1,0 +1,47 @@
+{
+  "name": "@smyd/app-checkout",
+  "version": "1.0.0",
+  "description": "A collection of elements that walk the user through the checkout experience including handling shipping and payment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stylemydomain/app-checkout.git"
+  },
+  "author": "Ben Forrester",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stylemydomain/app-checkout/issues"
+  },
+  "homepage": "https://github.com/stylemydomain/app-checkout#readme",
+  "dependencies": {
+    "@polymer/paper-button": "^3.0.1",
+    "@polymer/paper-checkbox": "^3.1.0",
+    "@polymer/paper-icon-button": "^3.0.2",
+    "@polymer/paper-input": "^3.2.1",
+    "@polymer/paper-radio-button": "^3.0.1",
+    "@polymer/paper-radio-group": "^3.0.1",
+    "@polymer/polymer": "^3.0.0",
+    "@sendgrid/mail": "^7.3.0",
+    "@smyd/app-functions": "^1.0.7",
+    "@smyd/app-imgs": "^1.0.5",
+    "@smyd/app-inputs": "^1.0.3",
+    "@smyd/app-overlays": "^1.0.6",
+    "@smyd/app-shared": "^1.0.3",
+    "@smyd/checkout-items-sync": "^1.0.0",
+    "@smyd/checkout-pay": "^1.0.0",
+    "binpackingjs": "^2.3.2",
+    "braintree": "^3.0.0",
+    "shippo": "^1.5.0"
+  },
+  "devDependencies": {
+    "@polymer/iron-demo-helpers": "^3.1.0",
+    "@polymer/test-fixture": "^4.0.2",
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "wct-mocha": "^1.0.1"
+  }
+}

@@ -1,0 +1,135 @@
+
+<style>
+
+  #overlay {
+    --overlay-toolbar-background-color: var(--app-primary-color);
+  }
+
+  #content {
+    max-width: 500px;
+    margin:    0px auto;
+    padding:   16px;
+  }
+  
+  h1 {
+    color:       var(--dark-text-color);
+    font-weight: normal;
+    font-size:   24px;
+  }
+
+  .button-wrapper {
+    display:         flex;
+    flex-direction:  column;
+    justify-content: center;
+    margin:          32px 0px;
+  }
+
+  .btns {
+    @apply --paper-button-with-icon-mixin;
+    width:      100%;
+    text-align: center;
+    margin:     24px 0px;
+  }
+
+  .btns iron-icon {
+    @apply --iron-icon-inside-paper-button-mixin;
+  }  
+
+  #online-pay-ship-btn,
+  #online-pay-btn,
+  #online-pay-ship-btn iron-icon,
+  #online-pay-btn iron-icon { 
+    background-color: var(--app-accent-color);
+    color:            white;
+  }
+
+  #online-pay-in-store-pickup-btn,
+  #online-pay-in-store-pickup-btn iron-icon {
+    background-color: var(--app-primary-color);
+    color:            white;
+  }
+
+  #in-store-pay-pickup-btn,
+  #in-store-pay-btn,
+  #in-store-pay-pickup-btn iron-icon,
+  #in-store-pay-btn iron-icon {
+    background-color: var(--app-dark-color);
+    color:            white;
+  }
+
+  #pickup-disclaimer {
+    font-size: 14px;
+    color:     var(--secondary-text-color);
+  }
+
+</style>
+
+
+<app-header-overlay id="overlay"
+                    reveal-header
+                    reset-scroll
+                    header-size="1"
+                    prebuilt-animation="from-right"
+                    title="Checkout Method">
+  <div id="content" slot="content">
+    <h1>
+      How do you want to checkout with us today?
+    </h1>
+    <div class="button-wrapper">
+      <div hidden="[[!hasShippables]]">
+        <paper-button id="online-pay-ship-btn"
+                      class="btns"
+                      on-click="__onlinePayShipBtnClicked"
+                      raised>
+          <iron-icon icon="app-icons:face"></iron-icon>
+          pay now and ship to me
+        </paper-button>
+        <paper-button id="online-pay-in-store-pickup-btn"
+                      class="btns"
+                      on-click="__onlinePayInStorePickupBtnClicked"
+                      raised>
+          <iron-icon icon="app-icons:store"></iron-icon>
+          pay now and pick up in store
+        </paper-button>
+        <paper-button id="in-store-pay-pickup-btn"
+                      class="btns"
+                      on-click="__inStorePayPickupBtnClicked"
+                      raised>
+          <iron-icon icon="app-icons:store"></iron-icon>
+          pay and pick up in store *
+        </paper-button>        
+      </div>
+      <div hidden="[[hasShippables]]">
+        <paper-button id="online-pay-btn"
+                      class="btns"
+                      on-click="__onlinePayBtnClicked"
+                      raised>
+          <iron-icon icon="app-icons:face"></iron-icon>
+          pay now
+        </paper-button>
+        <paper-button id="in-store-pay-btn"
+                      class="btns"
+                      on-click="__inStorePayBtnClicked"
+                      raised>
+          <iron-icon icon="app-icons:store"></iron-icon>
+          pay in store
+        </paper-button>
+      </div>
+      <div id="pickup-disclaimer">
+        * Disclaimer for orders that are paid in-store.
+        <ul>
+          <li>
+            Availabilities are not guaranteed.  
+          </li>
+          <li>
+            Pricing is only valid today until business close.
+          </li>
+          <li>
+            The order is not guaranteed to be ready by the time you arrive.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</app-header-overlay>

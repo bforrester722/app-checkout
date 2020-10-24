@@ -1,0 +1,34 @@
+
+
+<style>
+	/* so slotted items are not shown til order is imported and opened */
+	checkout-order {		
+		display: none; 
+	}
+
+</style>
+
+<checkout-pay id="pay" order="[[_order]]"></checkout-pay>
+<checkout-selector id="selector" 
+									 has-shippables="[[_hasShippables]]">
+</checkout-selector>
+<checkout-info id="info" 
+							 has-shippables="[[_hasShippables]]" 
+							 order-type="[[_orderType]]"
+							 shippables="[[_shippables]]" 
+							 subtotal="[[subtotal]]" 
+							 user="[[user]]"
+							 user-data="[[_userData]]">
+</checkout-info>
+<checkout-order id="order" 
+				order="[[_order]]">
+	<slot name="items"></slot>
+</checkout-order>
+<app-spinner id="spinner" full-screen></app-spinner>
+<checkout-items-sync id="sync"
+										 checkout-open="[[_checkoutOpen]]"
+										 subscriptions="[[_syncSubscriptions]]"
+										 too-late-to-open="[[_tooLateToOpenSync]]">
+	<slot name="sync-items"></slot>               
+</checkout-items-sync>
+<checkout-success id="success"></checkout-success>

@@ -1,0 +1,367 @@
+
+<style>
+
+  #overlay {
+    --overlay-toolbar-background-color: var(--app-dark-color);
+  }
+  
+  #content {
+    max-width: 500px;
+    margin:    0px auto;
+  }
+
+  section[hidden] {
+    display: none;
+  }
+
+  .headline {
+    @apply --bottom-divider-mixin;
+  }  
+
+  .padding-16 {
+    padding: 16px;
+  }
+
+  h1 {
+    color:       var(--dark-text-color);
+    font-weight: normal;
+    font-size:   24px;
+  }
+
+  h1[hidden] {
+    display: none;
+  }
+
+  strong {
+    color: var(--app-accent-color);
+  }
+
+  .secondary-text {
+    font-size: 14px;
+    color:     var(--secondary-text-color);
+  }
+
+  .button-wrapper {
+    display:         flex;
+    justify-content: center;
+    margin:          32px 0px;
+  }
+
+  #create-account-btn,
+  #create-account-btn iron-icon { 
+    background-color: var(--app-accent-color);
+    color:            white;
+  }
+
+  #sign-in-btn,
+  #sign-in-btn iron-icon {
+    background-color: var(--app-primary-color);
+    color:            white;
+  }
+
+  .account-btns {
+    @apply --paper-button-with-icon-mixin;
+    width:      100%;
+    text-align: center;
+    margin:     0px;
+  }
+
+  .account-btns iron-icon {
+    @apply --iron-icon-inside-paper-button-mixin;
+  }
+
+  .lower-sections {
+    @apply --divider-mixin;
+  }
+
+  edit-input,
+  shipping-inputs {
+    --input-padding: 0px;
+  }
+
+  paper-checkbox {
+    font-size: 14px;
+    margin:    16px 0px;
+    --paper-checkbox-unchecked-color:     var(--dark-text-color);
+    --paper-checkbox-label-color:         var(--dark-text-color);
+    --paper-checkbox-unchecked-ink-color: var(--dark-text-color);
+    --paper-checkbox-checked-color:       var(--app-accent-color);
+    --paper-checkbox-checked-ink-color:   var(--app-accent-color);
+  }
+
+  .call-to-action-btns {
+    width:            100%;
+    margin:           0px;
+    background-color: var(--app-accent-color);
+    color:            white;
+  }
+
+  .call-to-action-btns[disabled] {
+    background-color: var(--app-disabled-color);
+    color:            var(--disabled-text-color);
+  }
+
+  app-modal {
+    --modal-card-header-color: var(--dark-text-color);
+  }
+
+  .modal-card-content {
+    position:  relative;
+    max-width: 500px;
+  }
+
+  #auth-modal-close-btn {
+    position: absolute;
+    top:     -86px;
+    right:   -12px;
+  }
+
+  paper-radio-button {
+    --paper-radio-button-unchecked-color:     var(--dark-text-color);  
+    --paper-radio-button-unchecked-ink-color: var(--dark-text-color);
+    --paper-radio-button-label-color:         var(--dark-text-color);
+    --paper-radio-button-checked-color:       var(--app-accent-color);  
+    --paper-radio-button-checked-ink-color:   var(--app-accent-color);
+  }
+
+  .radio-button-content {
+    display:        flex;
+    flex-direction: column;
+  }
+
+  .rate-name {
+    color:         var(--secondary-text-color);
+    font-size:     14px;
+    margin-bottom: 4px;
+  }
+
+  #shipping-disclaimer {
+    padding: 0px 12px; /* align with radio buttons */
+  }
+
+  .dismiss-confirm-buttons {
+    display:         flex;
+    justify-content: flex-end;
+  }
+
+  .confirm-btn {
+    background-color: var(--app-accent-color);
+    color:            var(--light-text-color);
+  }
+
+  .confirm-btn[disabled] {
+    background-color: var(--app-disabled-color);
+    color:            var(--disabled-text-color);
+  }
+
+  .dismiss-btn {
+    color: var(--app-accent-color);
+  }
+
+</style>
+
+
+<app-header-overlay id="overlay"
+                    reveal-header
+                    reset-scroll
+                    header-size="1"
+                    prebuilt-animation="from-right"
+                    title="My Info">
+  <div id="content" slot="content">
+
+    <section hidden="[[!__computeShippingInputsHidden(hasShippables, orderType)]]">
+      <div class="headline padding-16">
+        <h1 hidden="[[!__computeAnonymousUserContent(user)]]">
+          Please verify your email address.
+        </h1>
+        <h1 hidden="[[__computeAnonymousUserContent(user)]]">
+          Please add your email address.
+        </h1>
+      </div>
+      <div class="padding-16">
+        <h1>Receipt Destination</h1>
+        <edit-input icon="label-outline"
+                    kind="fullName">
+          <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                       autocapitalize
+                       auto-validate
+                       label="Full Name"
+                       placeholder="[[__computeFullNamePlaceholder(user.displayName)]]"
+                       tabindex="0">
+          </paper-input>
+        </edit-input>
+        <edit-input icon="mail"
+                    kind="email">
+          <paper-input id="emailInput"
+                       allowed-pattern="[^/\s/\f/\n/\r/\t/\v]"
+                       auto-validate
+                       error-message="Please enter a valid format"
+                       label="[[__computeEmailLabel(user.emailVerified)]]"
+                       pattern=".+@{1}.+\.{1}.+"
+                       placeholder="[[__computeEmailPlaceholder(user.email)]]"
+                       tabindex="0"
+                       type="email">
+          </paper-input>
+        </edit-input>
+      </div>
+      <div class="lower-sections padding-16">      
+        <p>
+          Next, we'll <strong>review</strong> your order.
+        </p>
+        <div class="button-wrapper">
+          <paper-button class="call-to-action-btns" 
+                        disabled="[[__computeButtonsDisabled(_orderUserInfo.*, orderType)]]"
+                        on-click="__continueButtonClicked"
+                        raised>
+            continue
+          </paper-button>
+        </div>
+      </div>
+    </section>
+    <section hidden="[[__computeShippingInputsHidden(hasShippables, orderType)]]">
+      <div class="headline padding-16">
+        <h1 hidden="[[!__computeAnonymousUserContent(user)]]">
+          Please verify your email and shipping addresses.
+        </h1>
+        <h1 hidden="[[__computeAnonymousUserContent(user)]]">
+          Please add your order information.
+        </h1>
+      </div>
+      <div class="padding-16">
+        <h1>Receipt Destination</h1>
+        <edit-input icon="mail"
+                    kind="email">
+          <paper-input id="emailInput"
+                       allowed-pattern="[^/\s/\f/\n/\r/\t/\v]"
+                       auto-validate
+                       error-message="Please enter a valid format"
+                       label="[[__computeEmailLabel(user.emailVerified)]]"
+                       pattern=".+@{1}.+\.{1}.+"
+                       placeholder="[[__computeEmailPlaceholder(user.email)]]"
+                       tabindex="0"
+                       type="email">
+          </paper-input>
+        </edit-input>
+        <h1>Shipping Destination</h1>
+        <p class="secondary-text">
+          You may change this if you are shipping to a different address.
+        </p>
+        <shipping-inputs data="[[_orderUserInfo]]"></shipping-inputs>
+        <paper-checkbox id="checkbox"
+                        on-checked-changed="__saveAsDefaultShippingButtonClicked"
+                        checked="[[_defaultShippingAddressChecked]]"
+                        disabled="[[__computeButtonsDisabled(_orderUserInfo.*)]]"
+                        hidden="[[!__computeAnonymousUserContent(user)]]">
+          Make this my default shipping address.
+        </paper-checkbox>
+      </div>
+      <div class="lower-sections padding-16">      
+        <p>
+          Next, we will show you our best <strong>shipping options</strong>.
+        </p>
+        <div class="button-wrapper">
+          <paper-button class="call-to-action-btns" 
+                        disabled="[[__computeButtonsDisabled(_orderUserInfo.*)]]"
+                        on-click="__shippingOptionsButtonClicked"
+                        raised>
+            shipping options
+          </paper-button>
+        </div>
+      </div>
+    </section>    
+    <app-spinner id="spinner" full-screen></app-spinner>
+
+  </div>
+</app-header-overlay>
+
+
+
+<app-modal id="authModal"
+           heading="Sign Up Today!">
+  <div class="modal-card-content" slot="card-content-slot">
+    <paper-icon-button id="auth-modal-close-btn"
+                       icon="app-icons:close"
+                       on-click="__authModalContinueButtonClicked">
+    </paper-icon-button>
+    <p>
+      <strong>Save time</strong> and <strong>add convenience</strong> on future visits. 
+    </p>
+    <p>
+      <strong>Create an account with us today!</strong>
+    </p>    
+    <div class="button-wrapper">
+      <paper-button id="create-account-btn"
+                    class="account-btns"
+                    on-click="__accountButtonClicked"
+                    raised>
+        <iron-icon icon="app-icons:account-circle"></iron-icon>
+        create account
+      </paper-button>
+    </div>
+    <div class="button-wrapper">
+      <paper-button id="sign-in-btn"
+                    class="account-btns"
+                    on-click="__accountButtonClicked"
+                    raised>
+        <iron-icon icon="app-icons:face"></iron-icon>
+        sign in
+      </paper-button>
+    </div>
+  </div>
+  <p>
+    Or, feel free to continue anonymously.
+  </p>
+  <div class="dismiss-confirm-buttons" slot="card-actions-slot">
+    <paper-button class="dismiss-btn" 
+                  on-click="__authModalContinueButtonClicked">
+      continue anonymously
+    </paper-button>  
+  </div>
+</app-modal>
+
+
+<app-modal id="shippingModal"
+           heading="Shipping Options">
+  <div class="modal-card-content" slot="card-content-slot">
+    <paper-radio-group on-selected-changed="__selectedRadioButtonChanged">
+      <template is="dom-repeat" items="[[_shippingRates]]">
+        <paper-radio-button name="[[item.name]]">
+          <div class="radio-button-content">
+            <div>Arrives in about [[__computeEstimatedDays(item.estimated_days)]]</div>
+            <div>[[__computeRateTotal(item.total)]]</div>
+          </div>
+        </paper-radio-button>
+      </template>
+    </paper-radio-group>
+    <p id="shipping-disclaimer" class="secondary-text">
+      Shipping prices valid for 7 days.
+    </p>
+  </div>
+  <div class="dismiss-confirm-buttons" slot="card-actions-slot">
+    <paper-button class="dismiss-btn" 
+                  on-click="__modalDismissButtonClicked">
+      dismiss
+    </paper-button>   
+    <paper-button class="confirm-btn" 
+                  on-click="__modalConfirmButtonClicked" 
+                  disabled="[[__computeConfirmBtnDisabled(_selectedRate)]]">
+      confirm
+    </paper-button>      
+  </div>
+</app-modal>
+
+
+<app-modal id="addressErrorModal"
+           heading="Address Error">
+  <div slot="card-content-slot"> 
+    <template is="dom-repeat" items="[[_addressErrorMessages]]">
+      <p>[[item.text]]</p>
+    </template>
+  </div>
+  <div slot="card-actions-slot">
+    <paper-button class="dismiss-btn" 
+                  on-click="__addressErrorModalDismissButtonClicked">
+      got it
+    </paper-button> 
+  </div>
+</app-modal>
