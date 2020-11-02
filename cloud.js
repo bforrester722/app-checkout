@@ -187,7 +187,10 @@ exports.init = (admin, functions) => {
       const {inventoryAdjustments, orderType} = order;
       // services, events, etc dont have inventory adjustments
       if (!inventoryAdjustments) { 
-        console.error('adjustInventory error',  order);
+        if (orderType !== 'pickup') {
+          console.error('adjustInventory error',  order);
+        }
+
         return; 
       }
 

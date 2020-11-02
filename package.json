@@ -1,6 +1,6 @@
 {
   "name": "@smyd/app-checkout",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A collection of elements that walk the user through the checkout experience including handling shipping and payment",
   "main": "index.js",
   "scripts": {
