@@ -349,7 +349,7 @@ class AppCheckout extends AppElement {
   }
 
 
-  __startUserSub(uid) {
+  async __startUserSub(uid) {
     const callback = dbVal => {
       this._userData = dbVal;
     };
@@ -363,7 +363,7 @@ class AppCheckout extends AppElement {
       console.error(error);
     };
 
-    this._unsubscribeUser = services.subscribe({
+    this._unsubscribeUser = await services.subscribe({
       callback,
       coll: 'users',
       doc:   uid,
@@ -372,7 +372,7 @@ class AppCheckout extends AppElement {
   }
 
 
-  __startCreditSub(uid) {
+  async __startCreditSub(uid) {
     const callback = dbVal => {
       this._credit = dbVal.credit;
     };
@@ -383,7 +383,7 @@ class AppCheckout extends AppElement {
       console.error(error);
     };
 
-    this._unsubscribeCredit = services.subscribe({
+    this._unsubscribeCredit = await services.subscribe({
       callback,
       coll: `users/${uid}/credit`,
       doc:  'asg',
